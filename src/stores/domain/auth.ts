@@ -1,8 +1,8 @@
 import { makeAutoObservable } from "mobx";
 import RootStore from "..";
-import { AuthPageState, User } from "../../types/authPage";
+import { AuthPageState } from "../../types/authPage";
+import { User } from "../../types/user";
 import axios, { AxiosError } from "axios";
-import { Simulate } from "react-dom/test-utils";
 
 export default class AuthStore {
   rootStore: RootStore;
@@ -55,20 +55,20 @@ export default class AuthStore {
 
   processRegistration = async () => {
     try {
-      // Перевірка чи існує користувач з таким логіном
       const userExists = this.rootStore.usersStore.users.some(
         (user) => user.login === this.login,
       );
 
       if (!userExists) {
         this.registrationError = false;
-
-        // Реєстрація нового користувача
-        const response = await axios.post("http://localhost:8080/api/user", {
-          login: this.login,
-          password: this.password,
-          admin: false,
-        });
+        const response = await axios.post(
+          `${this.rootStore.globalStore.serverUrl}/api/user`,
+          {
+            login: this.login,
+            password: this.password,
+            admin: false,
+          },
+        );
 
         await this.rootStore.usersStore.getUsers();
         this.rootStore.globalStore.setCurrentUser(response.data);
@@ -76,7 +76,6 @@ export default class AuthStore {
         this.setPassword("");
         console.log("New user registered:", response.data);
       } else {
-        // Якщо користувач з таким логіном вже існує, виведіть помилку
         this.registrationError = true;
       }
     } catch (error) {
@@ -86,9 +85,9 @@ export default class AuthStore {
 
   processUserDelete = async (id: number) => {
     try {
-      // Виконати запит DELETE для видалення користувача з вказаним id
-      await axios.delete(`http://localhost:8080/api/users/${id}`);
-      // Оновити список користувачів після видалення
+      await axios.delete(
+        `${this.rootStore.globalStore.serverUrl}/api/users/${id}`,
+      );
       if (id === this.rootStore.globalStore.currentUser?.id) {
         this.rootStore.globalStore.currentUser = null;
       }

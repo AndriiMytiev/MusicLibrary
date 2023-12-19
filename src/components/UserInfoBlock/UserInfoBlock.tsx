@@ -2,7 +2,7 @@ import "./styles.scss";
 import { observer } from "mobx-react-lite";
 import defaultAvatar from "../../assets/defaultAvatar.jpg";
 import { Button } from "@mui/material";
-import { User } from "../../types/authPage";
+import { User } from "../../types/user";
 import { useStore } from "../../hooks/useStore";
 import { useNavigate } from "react-router-dom";
 
@@ -33,7 +33,7 @@ export const UserInfoBlock = observer((props: UserInfoBlockProps) => {
     <div className="UserInfoBlock">
       <div className="avatarBlock">
         <div className="avatar">
-          <img src={user?.avatar ? user.avatar : defaultAvatar} alt="avatar" />
+          <img src={defaultAvatar} alt="avatar" />
         </div>
         {loginUser && (
           <Button onClick={handleLogoutButtonClick} className="logoutButton">

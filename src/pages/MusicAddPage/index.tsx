@@ -1,12 +1,11 @@
 import "./styles.scss";
 import { observer } from "mobx-react-lite";
-import AuthBlock from "../../components/AuthPageComponents/AuthBlock";
-import Logo from "../../assets/logo.png";
-import { useEffect } from "react";
 import { useStore } from "../../hooks/useStore";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { MusicAddBlock } from "../../components/MusicAddBlock/MusicAddBlock";
 
-export const AuthPage = observer(() => {
+export const MusicAddPage = observer(() => {
   const {
     globalStore: { currentUser, setIsEditPageAvailable },
   } = useStore();
@@ -14,8 +13,8 @@ export const AuthPage = observer(() => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentUser !== null) {
-      navigate("/");
+    if (currentUser === null) {
+      navigate("/auth");
     }
   }, [currentUser, navigate]);
 
@@ -24,14 +23,10 @@ export const AuthPage = observer(() => {
   }, [setIsEditPageAvailable]);
 
   return (
-    <div className="AuthPage">
-      <div className="authPageTitle">
-        <img src={Logo} alt="logo" />
-        <h1>
-          Welcome to <span>HarmonyHub</span>!
-        </h1>
+    <div className="MusicAddPage page">
+      <div className="container">
+        <MusicAddBlock />
       </div>
-      <AuthBlock />
     </div>
   );
 });

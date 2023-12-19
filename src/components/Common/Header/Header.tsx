@@ -18,8 +18,8 @@ export const Header = observer(() => {
           <NavLink to="/user-library">
             <p>My library</p>
           </NavLink>
-          <NavLink to="/favourites">
-            <p>My favourites</p>
+          <NavLink to="/favorites">
+            <p>My favorites</p>
           </NavLink>
           <NavLink to="/profile">
             <p>My profile</p>
@@ -31,11 +31,15 @@ export const Header = observer(() => {
         <div className="loginUser">
           {currentUser?.name !== null && currentUser?.surname !== null ? (
             <p>
-              {currentUser?.name} {currentUser?.surname}
+              {currentUser?.name} {currentUser?.surname}{" "}
+              {currentUser?.admin && "(admin)"}
             </p>
           ) : (
-            <p>{currentUser?.login}</p>
+            <p>
+              {currentUser?.login} {currentUser?.admin && "(admin)"}
+            </p>
           )}
+
           <div className="userIcon">
             <img src={userIcon} alt="userIcon" />
           </div>

@@ -3,16 +3,16 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "../../hooks/useStore";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { UserInfoEditBlock } from "../../components/UserInfoEditBlock/UserInfoEditBlock";
-import { User } from "../../types/authPage";
+import { MusicEditBlock } from "../../components/MusicEditBlock/MusicEditBlock";
+import { Music } from "../../types/music";
 
-export const EditUserPage = observer(() => {
+export const MusicEditPage = observer(() => {
   const {
     globalStore: { isEditPageAvailable },
-    usersStore: { getUserByID },
+    musicStore: { getMusicByID },
   } = useStore();
 
-  const [user, setUser] = useState<User | null>(null);
+  const [music, setMusic] = useState<Music | null>(null);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -26,10 +26,10 @@ export const EditUserPage = observer(() => {
   useEffect(() => {
     const fetchData = async () => {
       if (params.id) {
-        const userData = await getUserByID(+params.id);
-        setUser(userData);
+        const userData = await getMusicByID(+params.id);
+        setMusic(userData);
       } else {
-        setUser(null);
+        setMusic(null);
       }
     };
 
@@ -37,9 +37,9 @@ export const EditUserPage = observer(() => {
   }, [params.id]);
 
   return (
-    <div className="EditUserPage page">
+    <div className="MusicEditPage page">
       <div className="container">
-        {user && <UserInfoEditBlock user={user} />}
+        {music && <MusicEditBlock music={music} />}
       </div>
     </div>
   );

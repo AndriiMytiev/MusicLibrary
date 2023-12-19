@@ -5,11 +5,14 @@ import RootStore, { RootStoreContext } from "./stores";
 import { MainPage } from "./pages/MainPage";
 import { Header } from "./components/Common/Header/Header";
 import { CurrentUserInfoPage } from "./pages/CurrentUserPage";
-import { EditUserPage } from "./pages/EditUserPage";
+import { UserEditPage } from "./pages/UserEditPage";
 import { UsersListPage } from "./pages/UsersListPage";
-import { UserLibrary } from "./pages/UserLibrary";
-import { UserFavouritesLibrary } from "./pages/UserFavouritesLibrary";
+import { UserLibraryPage } from "./pages/UserLibraryPage";
+import { UserFavoritesPage } from "./pages/UserFavoritesPage";
 import { UserPage } from "./pages/UserPage";
+import { ToTopButton } from "./components/Common/ToTopButton/ToTopButton";
+import { MusicEditPage } from "./pages/MusicEditPage";
+import { MusicAddPage } from "./pages/MusicAddPage";
 
 function App() {
   const rootStore = new RootStore();
@@ -18,15 +21,18 @@ function App() {
     <RootStoreContext.Provider value={rootStore}>
       <div className="App">
         <Header />
+        <ToTopButton />
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/auth" element={<AuthPage />} />
-          <Route path="/user-library" element={<UserLibrary />} />
-          <Route path="/favourites" element={<UserFavouritesLibrary />} />
+          <Route path="/user-library" element={<UserLibraryPage />} />
+          <Route path="/user-library/add-music" element={<MusicAddPage />} />
+          <Route path="/favorites" element={<UserFavoritesPage />} />
           <Route path="/profile" element={<CurrentUserInfoPage />} />
           <Route path="/users" element={<UsersListPage />} />
-          <Route path="/users/edit/:id" element={<EditUserPage />} />
+          <Route path="/users/edit/:id" element={<UserEditPage />} />
           <Route path="/users/:id" element={<UserPage />} />
+          <Route path="/edit-music/:id" element={<MusicEditPage />} />
           <Route path="*" element={<MainPage />} />
         </Routes>
       </div>

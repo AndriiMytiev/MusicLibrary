@@ -2,7 +2,7 @@ import "./styles.scss";
 import { observer } from "mobx-react-lite";
 import defaultAvatar from "../../assets/defaultAvatar.jpg";
 import { Button } from "@mui/material";
-import { User } from "../../types/authPage";
+import { User } from "../../types/user";
 import { useStore } from "../../hooks/useStore";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ export const UserInfoEditBlock = observer((props: UserInfoEditBlockProps) => {
 
   const {
     globalStore: { currentUser, setIsEditPageAvailable, setCurrentUser },
-    usersStore: { processEditing, processDeleting },
+    usersStore: { processUserEditing, processUserDeleting, getUsers },
   } = useStore();
 
   const navigate = useNavigate();
@@ -79,19 +79,21 @@ export const UserInfoEditBlock = observer((props: UserInfoEditBlockProps) => {
       name: name !== "" ? name : user.name,
       surname: surname !== "" ? surname : user.surname,
       info: info.trim(),
-      avatar: user.avatar,
-      favourites: user.favourites,
+      favorites: user.favorites,
       admin: isAdmin !== null && currentUser?.admin ? isAdmin : user.admin,
     };
 
-    processEditing(newUser);
+    processUserEditing(newUser);
     setIsEditPageAvailable(false);
-    if (currentUser?.id === newUser.id) {
-      setCurrentUser(newUser);
-      navigate("/profile");
-    } else {
-      navigate("/users");
-    }
+    setTimeout(() => {
+      getUsers();
+      if (currentUser?.id === newUser.id) {
+        setCurrentUser(newUser);
+        navigate("/profile");
+      } else {
+        navigate("/users");
+      }
+    }, 10);
   };
 
   const onNameFieldBlur = () => {
@@ -107,16 +109,19 @@ export const UserInfoEditBlock = observer((props: UserInfoEditBlockProps) => {
   };
 
   const handleDeleteButtonClick = (id: number) => {
-    processDeleting(id);
+    processUserDeleting(id);
     setIsEditPageAvailable(false);
-    navigate("/users");
+    setTimeout(() => {
+      getUsers();
+      navigate("/users");
+    }, 10);
   };
 
   return (
     <div className="UserInfoEditBlock">
       <div className="avatarBlock">
         <div className="avatar">
-          <img src={user?.avatar ? user.avatar : defaultAvatar} alt="avatar" />
+          <img src={defaultAvatar} alt="avatar" />
         </div>
         {currentUser?.admin && currentUser.id !== user.id && (
           <Button
@@ -128,6 +133,7 @@ export const UserInfoEditBlock = observer((props: UserInfoEditBlockProps) => {
         )}
       </div>
       <div className="infoBlock">
+        <p className="userId">Editing User#{user.id}</p>
         <div className="inputBlock">
           <CustomTextField
             value={name}

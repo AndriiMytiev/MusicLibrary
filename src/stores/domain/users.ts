@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import RootStore from "..";
-import { User } from "../../types/authPage";
+import { User } from "../../types/user";
 import axios, { AxiosError } from "axios";
 
 export default class UsersStore {
@@ -19,7 +19,9 @@ export default class UsersStore {
 
   getUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/users");
+      const response = await axios.get(
+        `${this.rootStore.globalStore.serverUrl}/api/users`,
+      );
       this.setUsers(response.data);
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -30,7 +32,7 @@ export default class UsersStore {
   getUserByID = async (userId: number): Promise<User | null> => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/users/${userId}`,
+        `${this.rootStore.globalStore.serverUrl}/api/users/${userId}`,
       );
       return response.data as User; // Повертаємо конкретного користувача
     } catch (error) {
@@ -40,10 +42,13 @@ export default class UsersStore {
     }
   };
 
-  processEditing = async (user: User) => {
+  processUserEditing = async (user: User) => {
     try {
       // Ваш запит PUT для оновлення користувача
-      const response = await axios.put(`http://localhost:8080/api/users`, user);
+      const response = await axios.put(
+        `${this.rootStore.globalStore.serverUrl}/api/users`,
+        user,
+      );
 
       // Опціонально, обробляйте відповідь від сервера
       console.log("Updated user:", response.data);
@@ -55,15 +60,57 @@ export default class UsersStore {
     }
   };
 
-  processDeleting = async (id: number) => {
+  processUserDeleting = async (id: number) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8080/api/users/${id}`,
+        `${this.rootStore.globalStore.serverUrl}/api/users/${id}`,
       );
 
       console.log("Delete user:", response.data);
     } catch (error) {
       console.error("Error deleting user:", error);
+    }
+  };
+
+  processFavouritesEditing = async (user: User, newFavorites: number[]) => {
+    try {
+      // Ваш запит PUT для оновлення користувача
+      const updatedUser: User = {
+        id: user.id,
+        login: user.login,
+        password: user.password,
+        name: user.name,
+        surname: user.surname,
+        info: user.info,
+        favorites: newFavorites,
+        admin: user.admin,
+      };
+      const response = await axios.put(
+        `${this.rootStore.globalStore.serverUrl}/api/users`,
+        updatedUser,
+      );
+      // Опціонально, обробляйте відповідь від сервера
+      console.log("Updated user:", response.data);
+      this.rootStore.globalStore.setCurrentUser(updatedUser);
+    } catch (error) {
+      // Обробка помилок
+      console.error("Error updating user:", error);
+      return false;
+    }
+    return true;
+  };
+
+  toggleFav = (musicId: number) => {
+    const user = this.rootStore.globalStore.currentUser;
+    const favourites = user?.favorites;
+    if (favourites) {
+      if (favourites?.includes(musicId)) {
+        const newFavourites = favourites?.filter((fav) => fav !== musicId);
+        user && this.processFavouritesEditing(user, newFavourites);
+      } else {
+        const newFavourites = [...favourites, musicId];
+        user && this.processFavouritesEditing(user, newFavourites);
+      }
     }
   };
 }

@@ -1,4 +1,4 @@
-import { User } from "../types/authPage";
+import { User } from "../types/user";
 
 export const searchUsers = (users: User[], text: string) => {
   const searchText = text.toLowerCase(); // Перевести введений текст у нижній регістр для нормалізації порівнянь

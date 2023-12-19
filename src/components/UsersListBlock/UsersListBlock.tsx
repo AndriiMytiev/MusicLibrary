@@ -6,7 +6,7 @@ import loupe from "../../assets/loupe.png";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../types/authPage";
+import { User } from "../../types/user";
 import { searchUsers } from "../../utils/users";
 
 export const UsersListBlock = observer(() => {
@@ -19,12 +19,11 @@ export const UsersListBlock = observer(() => {
 
   useEffect(() => {
     getUsers();
-  }, []);
+  }, [getUsers]);
 
   const sortedUsers: User[] = useMemo(() => {
     const newUsers = users.slice().sort((a, b) => a.id - b.id);
     if (searchValue !== "") {
-      console.log("+");
       return searchUsers(newUsers, searchValue);
     } else {
       return newUsers;
@@ -40,7 +39,6 @@ export const UsersListBlock = observer(() => {
 
   const handleSearchValueOnChange = (value: string) => {
     setSearchValue(value);
-    console.log(value);
   };
 
   const handleUserClick = (id: number) => {
@@ -60,10 +58,7 @@ export const UsersListBlock = observer(() => {
           return (
             <div className="listItem" key={user.id}>
               <div className="avatar">
-                <img
-                  src={user.avatar ? user.avatar : defaultAvatar}
-                  alt="userAvatar"
-                />
+                <img src={defaultAvatar} alt="userAvatar" />
               </div>
               <div className="info">
                 {user?.name !== null && user?.surname !== null ? (

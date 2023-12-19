@@ -1,9 +1,12 @@
 import { makeAutoObservable } from "mobx";
 import RootStore from "..";
-import { User } from "../../types/authPage";
+import { User } from "../../types/user";
 
 export default class GlobalStore {
   rootStore: RootStore;
+
+  serverUrl: string = "http://localhost:8080";
+
   currentUser: User | null = {
     id: 1,
     login: "Galious",
@@ -11,8 +14,7 @@ export default class GlobalStore {
     name: "Andrii",
     surname: "Mytiev",
     info: "",
-    avatar: null,
-    favourites: null,
+    favorites: [1],
     admin: true,
   };
 

@@ -1,11 +1,12 @@
 import "./styles.scss";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../hooks/useStore";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { MusicList } from "../../components/MusicList/MusicList";
+import { Music } from "../../types/music";
 
-export const MainPage = observer(() => {
+export const UserLibraryPage = observer(() => {
   const {
     globalStore: { currentUser, setIsEditPageAvailable },
     musicStore: { music, getMusic },
@@ -27,10 +28,18 @@ export const MainPage = observer(() => {
     getMusic();
   }, [getMusic]);
 
+  const currentMusicList: Music[] = useMemo(() => {
+    return music.filter((music) => music.user === currentUser?.id);
+  }, [currentUser, music]);
+
   return (
-    <div className="MainPage page">
+    <div className="UserLibraryPage page">
       <div className="container">
-        <MusicList musicList={music} />
+        <MusicList
+          musicList={currentMusicList}
+          canEdit={true}
+          userLibrary={true}
+        />
       </div>
     </div>
   );

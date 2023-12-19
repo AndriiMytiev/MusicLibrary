@@ -3,12 +3,12 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "../../hooks/useStore";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { UserInfoEditBlock } from "../../components/UserInfoEditBlock/UserInfoEditBlock";
 import { User } from "../../types/user";
-import { UserPageBlock } from "../../components/UserPageBlock/UserPageBlock";
 
-export const UserPage = observer(() => {
+export const UserEditPage = observer(() => {
   const {
-    globalStore: { currentUser, setIsEditPageAvailable },
+    globalStore: { isEditPageAvailable },
     usersStore: { getUserByID },
   } = useStore();
 
@@ -18,10 +18,10 @@ export const UserPage = observer(() => {
   const params = useParams();
 
   useEffect(() => {
-    if (currentUser === null) {
-      navigate("/auth");
+    if (!isEditPageAvailable) {
+      navigate("/");
     }
-  }, [currentUser, navigate]);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,13 +36,11 @@ export const UserPage = observer(() => {
     fetchData();
   }, [params.id]);
 
-  useEffect(() => {
-    setIsEditPageAvailable(false);
-  }, []);
-
   return (
-    <div className="UserPage page">
-      <div className="container">{user && <UserPageBlock user={user} />}</div>
+    <div className="UserEditPage page">
+      <div className="container">
+        {user && <UserInfoEditBlock user={user} />}
+      </div>
     </div>
   );
 });

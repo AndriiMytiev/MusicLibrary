@@ -113,7 +113,7 @@
       border: 1px solid transparent;
       background: linear-gradient(
                       to bottom,
-                      rgba(254, 102, 0, 1),
+                      variables.$primarySecondary,
                       variables.$primaryMain,
                       rgba(254, 94, 0, 0)
       )
