@@ -62,11 +62,15 @@ export default class UsersStore {
 
   processUserDeleting = async (id: number) => {
     try {
-      const response = await axios.delete(
+      const responseUser = await axios.delete(
         `${this.rootStore.globalStore.serverUrl}/api/users/${id}`,
       );
 
-      console.log("Delete user:", response.data);
+      console.log("Delete user:", responseUser.data);
+      const responseMusic = await axios.delete(
+        `${this.rootStore.globalStore.serverUrl}/api/musics/${id}`,
+      );
+      console.log("Delete music:", responseMusic.data);
     } catch (error) {
       console.error("Error deleting user:", error);
     }

@@ -83,21 +83,6 @@ export default class AuthStore {
     }
   };
 
-  processUserDelete = async (id: number) => {
-    try {
-      await axios.delete(
-        `${this.rootStore.globalStore.serverUrl}/api/users/${id}`,
-      );
-      if (id === this.rootStore.globalStore.currentUser?.id) {
-        this.rootStore.globalStore.currentUser = null;
-      }
-      await this.rootStore.usersStore.getUsers();
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      console.error("Error deleting user:", axiosError.message);
-    }
-  };
-
   setAuthPageStateToRegistration = () => {
     this.state = "registration";
   };

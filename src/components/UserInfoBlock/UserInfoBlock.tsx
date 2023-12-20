@@ -16,11 +16,13 @@ export const UserInfoBlock = observer((props: UserInfoBlockProps) => {
 
   const {
     globalStore: { setCurrentUser, setIsEditPageAvailable },
+    authStore: { setAuthPageStateToLogin },
   } = useStore();
 
   const navigate = useNavigate();
 
   const handleLogoutButtonClick = () => {
+    setAuthPageStateToLogin();
     setCurrentUser(null);
   };
 

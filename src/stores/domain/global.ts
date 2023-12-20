@@ -15,7 +15,7 @@ export default class GlobalStore {
     surname: "Mytiev",
     info: "",
     favorites: [1],
-    admin: true,
+    admin: false,
   };
 
   isEditPageAvailable: boolean = false;
