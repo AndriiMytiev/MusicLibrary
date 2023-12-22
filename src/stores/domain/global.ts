@@ -5,18 +5,10 @@ import { User } from "../../types/user";
 export default class GlobalStore {
   rootStore: RootStore;
 
-  serverUrl: string = "http://localhost:8080";
+  serverUrl: string =
+    "https://musiclibrary-database-131675906386.herokuapp.com";
 
-  currentUser: User | null = {
-    id: 1,
-    login: "Galious",
-    password: "admin",
-    name: "Andrii",
-    surname: "Mytiev",
-    info: "",
-    favorites: [1],
-    admin: false,
-  };
+  currentUser: User | null = null;
 
   isEditPageAvailable: boolean = false;
 
