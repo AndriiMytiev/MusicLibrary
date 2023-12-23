@@ -4,7 +4,7 @@ import { AuthPage } from "./pages/AuthPage";
 import RootStore, { RootStoreContext } from "./stores";
 import { MainPage } from "./pages/MainPage";
 import { Header } from "./components/Common/Header/Header";
-import { CurrentUserInfoPage } from "./pages/CurrentUserPage";
+import { CurrentUserPage } from "./pages/CurrentUserPage";
 import { UserEditPage } from "./pages/UserEditPage";
 import { UsersListPage } from "./pages/UsersListPage";
 import { UserLibraryPage } from "./pages/UserLibraryPage";
@@ -28,7 +28,7 @@ function App() {
           <Route path="/user-library" element={<UserLibraryPage />} />
           <Route path="/user-library/add-music" element={<MusicAddPage />} />
           <Route path="/favorites" element={<UserFavoritesPage />} />
-          <Route path="/profile" element={<CurrentUserInfoPage />} />
+          <Route path="/profile" element={<CurrentUserPage />} />
           <Route path="/users" element={<UsersListPage />} />
           <Route path="/users/edit/:id" element={<UserEditPage />} />
           <Route path="/users/:id" element={<UserPage />} />

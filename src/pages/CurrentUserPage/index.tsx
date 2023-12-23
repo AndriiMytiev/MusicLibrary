@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserInfoBlock } from "../../components/UserInfoBlock/UserInfoBlock";
 
-export const CurrentUserInfoPage = observer(() => {
+export const CurrentUserPage = observer(() => {
   const {
     globalStore: { currentUser, setIsEditPageAvailable },
   } = useStore();
@@ -23,7 +23,7 @@ export const CurrentUserInfoPage = observer(() => {
   }, []);
 
   return (
-    <div className="CurrentUserInfoPage page">
+    <div className="CurrentUserPage page">
       <div className="container">
         {currentUser && <UserInfoBlock user={currentUser} loginUser={true} />}
       </div>
